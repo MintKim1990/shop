@@ -15,10 +15,10 @@ class KafkaTemplateConfiguration {
     fun kafkaTemplate() = KafkaTemplate(producerFactory())
 
     private fun producerFactory(): ProducerFactory<String, String> {
-        return DefaultKafkaProducerFactory(producerProps())
+        return DefaultKafkaProducerFactory(producerProperties())
     }
 
-    private fun producerProps(): Map<String, Any> {
+    private fun producerProperties(): Map<String, Any> {
         return hashMapOf(
             ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to "localhost:9092",
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
