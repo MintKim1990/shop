@@ -6,7 +6,7 @@ data class Quantity(
 ) {
 
     init {
-        check(quantity < 0) { "상품수량은 0보다 커야합니다." }
+        check(quantity > 0) { "상품수량은 0보다 커야합니다." }
     }
 
 }

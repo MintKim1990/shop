@@ -1,9 +1,7 @@
 package product.domain
 
-import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
 
-@Repository
 interface QuantityRepository {
 
     suspend fun save(quantity: Quantity): Mono<Boolean>

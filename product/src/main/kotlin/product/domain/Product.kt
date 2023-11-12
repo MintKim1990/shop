@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import java.math.BigDecimal
 
-@Table("Product")
+@Table("PRODUCT")
 class Product(
     @Id
     var id: Long? = null,

@@ -5,17 +5,20 @@ import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.data.redis.core.ReactiveRedisTemplate
 import org.springframework.data.redis.core.ReactiveValueOperations
 import org.springframework.data.redis.core.script.RedisScript
+import org.springframework.stereotype.Repository
 import product.domain.Quantity
 import product.domain.QuantityRepository
 import product.kLogger
 import reactor.core.publisher.Mono
 
+@Repository
 class RedisQuantityRepository(
     private val reactiveRedisTemplate: ReactiveRedisTemplate<String, String>,
     private val reactiveValueOperations: ReactiveValueOperations<String, String> = reactiveRedisTemplate.opsForValue(),
     private val decreaseScript: RedisScript<String>,
     private val increaseScript: RedisScript<String>,
 ): QuantityRepository {
+
 
     private val log = kLogger()
     private val SUCCESSED = "OK"

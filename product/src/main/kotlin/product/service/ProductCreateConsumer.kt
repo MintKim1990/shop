@@ -11,6 +11,7 @@ import product.domain.Product
 import product.domain.ProductRepository
 import product.domain.Quantity
 import product.domain.QuantityRepository
+import product.kLogger
 
 
 @Component
@@ -19,6 +20,8 @@ class ProductCreateConsumer(
     private val productRepository: ProductRepository,
     private val quantityRepository: QuantityRepository,
 ) {
+
+    private val log = kLogger()
 
     @KafkaListener(
         id = "product-create-id", // 컨슈머 그룹 ID
@@ -37,6 +40,6 @@ class ProductCreateConsumer(
             val product = objectMapper.readValue(message, Product::class.java) // TODO Data Class로 변경
             productRepository.save(product)
             quantityRepository.save(Quantity(product.id!!, product.quantity))
-        }
+        }.subscribe()
     }
 }
