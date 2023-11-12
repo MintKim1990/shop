@@ -1,15 +1,17 @@
 package product.config
 
 import org.springframework.context.annotation.Bean
+import org.springframework.core.io.ClassPathResource
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory
-import org.springframework.data.redis.connection.RedisConnectionFactory
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.core.ReactiveRedisTemplate
-import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.data.redis.core.script.RedisScript
 import org.springframework.data.redis.serializer.RedisSerializationContext
 import org.springframework.data.redis.serializer.StringRedisSerializer
 
 class RedisConfig {
+
+    private val DECREASE_QUANTITY_SCRIPT_PATH = "scripts/decreaseQuantity.lua"
+    private val INCREASE_QUANTITY_SCRIPT_PATH = "scripts/increaseQuantity.lua"
 
     @Bean
     fun redisTemplate(reactiveRedisConnectionFactory: ReactiveRedisConnectionFactory): ReactiveRedisTemplate<String, String> {
@@ -22,6 +24,16 @@ class RedisConfig {
             .build()
 
         return ReactiveRedisTemplate(reactiveRedisConnectionFactory, redisSerializationContext)
+    }
+
+    @Bean
+    fun decreaseScript(): RedisScript<String> {
+        return RedisScript.of(ClassPathResource(DECREASE_QUANTITY_SCRIPT_PATH), String::class.java)
+    }
+
+    @Bean
+    fun increaseScript(): RedisScript<String> {
+        return RedisScript.of(ClassPathResource(INCREASE_QUANTITY_SCRIPT_PATH), String::class.java)
     }
 
 }

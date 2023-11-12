@@ -9,12 +9,15 @@ import org.springframework.messaging.handler.annotation.Header
 import org.springframework.stereotype.Component
 import product.domain.Product
 import product.domain.ProductRepository
+import product.domain.Quantity
+import product.domain.QuantityRepository
 
 
 @Component
 class ProductCreateConsumer(
     private val objectMapper: ObjectMapper,
     private val productRepository: ProductRepository,
+    private val quantityRepository: QuantityRepository,
 ) {
 
     @KafkaListener(
@@ -33,7 +36,7 @@ class ProductCreateConsumer(
         mono {
             val product = objectMapper.readValue(message, Product::class.java) // TODO Data Class로 변경
             productRepository.save(product)
-            // TODO 상품정보 캐싱로직 추가
+            quantityRepository.save(Quantity(product.id!!, product.quantity))
         }
     }
 }
